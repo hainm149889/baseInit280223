@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BaseInit</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">aeP7AWM2r1JWu9YXUVFAQR0XanzZcw6ZkBWTL</string>
 </resources>
