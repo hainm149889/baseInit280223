@@ -1,3 +1,3 @@
 export const Images = {
-  splash: require('../assets/splash.png'),
+  splash: require('../assets/bgSplash.jpeg'),
 };
