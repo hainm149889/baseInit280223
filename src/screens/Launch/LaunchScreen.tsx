@@ -22,9 +22,7 @@ export const LaunchScreen: FunctionComponent<Props> = () => {
   useFocusEffect(
     useCallback(() => {
       const timer = setTimeout(() => {
-        navigation.navigate(SCREENS.BottomTabNavigation, {
-          screen: SCREENS.HomeStack,
-        });
+        navigation.navigate(SCREENS.LOGIN_SCREEN);
       }, 2000);
       return () => {
         clearTimeout(timer);

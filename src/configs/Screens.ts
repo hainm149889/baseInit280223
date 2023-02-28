@@ -6,4 +6,5 @@ export enum SCREENS {
   BottomTabNavigation = 'BottomTabNavigation',
   HomeStack = 'HomeStack',
   AccountScreen = 'AccountScreen',
+  LOGIN_SCREEN = 'LoginScreen',
 }
