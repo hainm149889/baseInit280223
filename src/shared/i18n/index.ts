@@ -5,10 +5,10 @@ import en from './locales/en';
 import ja from './locales/ja';
 import vi from './locales/vi';
 
-i18n.defaultLocale = CONSTANT.LANGUAGES.EN;
-i18n.locale = CONSTANT.LANGUAGES.EN;
+i18n.defaultLocale = CONSTANT.LANGUAGES.VI;
+i18n.locale = CONSTANT.LANGUAGES.VI;
 i18n.fallbacks = true;
-i18n.translations = {en, vi, ja};
+i18n.translations = {vi, en, ja};
 let initialized = false;
 
 export var currentLanguage = CONSTANT.LANGUAGES.VI;

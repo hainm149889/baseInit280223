@@ -13,4 +13,5 @@ export const CONSTANT = {
     LANGUAGE: 'language',
     FIRST_LAUNCH_APP: 'first_launch_app',
   },
+  REVOKE_TOKEN_ENDPOINT: 'revocation',
 };

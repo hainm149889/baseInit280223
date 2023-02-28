@@ -1,1 +1,1 @@
-export * from "./GlobalSelector";
+export * from './GlobalSelector';

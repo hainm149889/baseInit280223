@@ -22,9 +22,6 @@ export const accountReducer: Reducer<IUserState, UnfoldSagaActionType> = (
 
   return produce(state, (draftState: IUserState): void => {
     switch (type) {
-      case createActionTypeOnSuccess(AccountActionType.CHANGE_LANGUAGE):
-        draftState.language = payload;
-        break;
       case createActionTypeOnSuccess(
         AccountActionType.CHANGE_LANGUAGE_WITH_LAUNCH,
       ):
