@@ -58,13 +58,6 @@ export default StyleSheet.create({
   logoProduct: {
     marginTop: ScreenUtils.scale(141),
   },
-  txtJanbox: {
-    marginTop: ScreenUtils.scale(-10),
-    marginLeft: ScreenUtils.scale(100),
-    ...Themes.font.bold,
-    fontSize: 12,
-    color: Themes.colors.onyx100,
-  },
   txtPoweredBy: {
     position: 'absolute',
     bottom: ScreenUtils.scale(108),
@@ -116,11 +109,6 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-  },
-  aboutJanboxN: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: ScreenUtils.scale(8),
   },
   mainContent: {
     position: 'absolute',
