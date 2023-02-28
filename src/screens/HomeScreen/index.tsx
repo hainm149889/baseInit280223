@@ -1,13 +1,13 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
-import {styles} from './styles';
-import {translate} from '@shared';
-import {useBoolean} from '@hooks';
-import {DataConstant} from '@configs';
-import {IRootState} from 'src/redux/reducers';
-import {useDispatch, useSelector} from 'react-redux';
-import {AccountAction} from '@redux';
 import {BottomSheet} from '@components';
+import {DataConstant} from '@configs';
+import {useBoolean} from '@hooks';
+import {AccountAction} from '@redux';
+import {translate} from '@shared';
+import React from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {IRootState} from 'src/redux/reducers';
+import {styles} from './styles';
 
 export const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -20,21 +20,11 @@ export const HomeScreen = () => {
   const accLanguage = useSelector(
     (state: IRootState) => state.account.language,
   ) as string;
-  console.log(
-    '🚀 ~ file: index.tsx:23 ~ HomeScreen ~ accLanguage:',
-    accLanguage,
-  );
+
   const languageSelected = Object.values(DataConstant.LANGUAGES).find(
     item => item.value === accLanguage,
   );
-  console.log(
-    '🚀 ~ file: index.tsx:30 ~ HomeScreen ~ languageSelected:',
-    languageSelected,
-  );
 
-  const setLanguage = (value: any) => {
-    dispatch(AccountAction.changeLanguage({language: value}));
-  };
   const arrOptions = [
     {
       title: DataConstant.LANGUAGES.VietNam.label,
@@ -58,15 +48,18 @@ export const HomeScreen = () => {
       },
     },
   ];
+  const setLanguage = (value: any) => {
+    dispatch(AccountAction.changeLanguage({language: value}));
+  };
   return (
     <View style={styles.container}>
-      <Text>HomeScreen</Text>
+      <Text>{translate('homeScreen')}</Text>
       <TouchableOpacity
         style={styles.btnChangeLang}
         onPress={setShowChangeLanguageModal}>
         <Text>{translate('changeLanguage')}</Text>
       </TouchableOpacity>
-      <Text style={styles.txtLanguage}>{languageSelected?.label}</Text>
+
       <BottomSheet
         isTranslated={true}
         isSearch={false}

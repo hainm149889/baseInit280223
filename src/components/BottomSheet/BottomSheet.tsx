@@ -5,15 +5,13 @@ import {Themes} from '@themes';
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {
   Dimensions,
-  Keyboard,
   KeyboardAvoidingView,
-  KeyboardEvent,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
+  Modal,
 } from 'react-native';
-import Modal from 'react-native-modal';
 import styles from './styles';
 export interface BottomSheetOption {
   color?: string;
@@ -50,11 +48,11 @@ export const BottomSheet: FunctionComponent<IProps> = props => {
     titleModal,
     arrOption,
     isShowModal,
-    onModalHide,
     isTranslated = true,
     showTitle = true,
     chooseValue,
   } = props;
+  console.log('🚀 ~ file: BottomSheet.tsx:55 ~ chooseValue:', chooseValue);
   const [isShowModalState, setIsShowModalState] = useState(isShowModal);
   const [dataSource, setDataSource] = useState(arrOption);
   const hideModal = function () {
@@ -64,24 +62,6 @@ export const BottomSheet: FunctionComponent<IProps> = props => {
     }
   };
 
-  const [maxHeight, setMaxHeight] = useState(
-    Dimensions.get('window').height * 0.9,
-  );
-  function onKeyboardDidShow(e: KeyboardEvent): void {
-    setMaxHeight(Dimensions.get('window').height - e.endCoordinates.height);
-  }
-
-  function onKeyboardDidHide(): void {
-    setMaxHeight(Dimensions.get('window').height * 0.9);
-  }
-
-  useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', onKeyboardDidShow);
-    Keyboard.addListener('keyboardDidHide', onKeyboardDidHide);
-    return (): void => {
-      Keyboard.dismiss();
-    };
-  }, []);
   useEffect(() => {
     setIsShowModalState(isShowModal);
   }, [isShowModal]);
@@ -92,24 +72,13 @@ export const BottomSheet: FunctionComponent<IProps> = props => {
 
   return (
     <Modal
-      useNativeDriver
-      useNativeDriverForBackdrop
-      statusBarTranslucent
-      propagateSwipe={true}
       hardwareAccelerated={false}
-      onBackdropPress={() => hideModal()}
-      onBackButtonPress={() => hideModal()}
-      onSwipeComplete={() => hideModal()}
-      onModalHide={onModalHide ? () => onModalHide() : () => {}}
-      swipeDirection="down"
       style={styles.modalContainer}
-      isVisible={isShowModalState}
-      hideModalContentWhileAnimating={true}
-      backdropTransitionOutTiming={0}>
+      visible={isShowModalState}>
       <KeyboardAvoidingView
         behavior={'position'}
         style={{
-          maxHeight: maxHeight,
+          maxHeight: Dimensions.get('window').height * 0.9,
         }}>
         <View style={styles.headerContainer} />
         <View
@@ -133,7 +102,7 @@ export const BottomSheet: FunctionComponent<IProps> = props => {
             {dataSource.map((item: BottomSheetOption, index: number) => (
               <TouchableOpacity
                 key={index}
-                onPress={item.onPress ? () => item.onPress() : () => {}}
+                onPress={() => item.onPress()}
                 style={styles.itemContainer}>
                 <View style={styles.titleContainer}>
                   <Text

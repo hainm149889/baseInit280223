@@ -71,7 +71,6 @@ export const OnBoardingScreen: FunctionComponent<Props> = props => {
                 setCheckedLanguageUS(false);
                 setCheckedLanguageJA(true);
                 setCheckedLanguageVN(false);
-
                 break;
             }
           },

@@ -63,7 +63,7 @@ const codePushOptions = {
   checkFrequency: codePush.CheckFrequency.MANUAL,
 };
 
-const JanboxProvider: FunctionComponent = () => {
+const AppProvider: FunctionComponent = () => {
   return (
     <Provider store={store}>
       <App />
@@ -71,7 +71,7 @@ const JanboxProvider: FunctionComponent = () => {
   );
 };
 
-const Janbox = codePush(codePushOptions)(JanboxProvider);
+const appBase = codePush(codePushOptions)(AppProvider);
 
 const styles = StyleSheet.create({
   content: {
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Janbox;
+export default appBase;

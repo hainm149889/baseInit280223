@@ -24,5 +24,6 @@ export const styles = StyleSheet.create({
     lineHeight: 18,
     ...Themes.font.mediumItalic,
     color: Themes.colors.black,
+    width: '100%',
   },
 });

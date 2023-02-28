@@ -7,11 +7,11 @@ import {
 import {AccountActionType} from '../types';
 
 export interface IUserState {
-  language: string | null;
+  language: string;
 }
 
 export const defaultState: IUserState = {
-  language: null,
+  language: '',
 };
 
 export const accountReducer: Reducer<IUserState, UnfoldSagaActionType> = (
@@ -22,12 +22,14 @@ export const accountReducer: Reducer<IUserState, UnfoldSagaActionType> = (
 
   return produce(state, (draftState: IUserState): void => {
     switch (type) {
+      case createActionTypeOnSuccess(AccountActionType.CHANGE_LANGUAGE):
+        draftState.language = payload;
+        break;
       case createActionTypeOnSuccess(
         AccountActionType.CHANGE_LANGUAGE_WITH_LAUNCH,
       ):
         draftState.language = payload;
         break;
-
       default:
         break;
     }

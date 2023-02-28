@@ -62,7 +62,6 @@
     "@types/i18n-js": "^3.8.4",
     "@types/jest": "^29.2.1",
     "@types/lodash": "^4.14.191",
-    "@types/react": "^18.0.24",
     "@types/react-native-vector-icons": "^6.4.13",
     "@types/react-native-version-check": "^3.4.5",
     "@types/react-test-renderer": "^18.0.0",
