@@ -23,8 +23,6 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
-	<key>CodePushDeploymentKey</key>
-	<string>aeP7AWM2r1JWu9YXUVFAQR0XanzZcw6ZkBWTL</string>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
@@ -53,6 +51,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CodePushDeploymentKey</key>
+	<string>aeP7AWM2r1JWu9YXUVFAQR0XanzZcw6ZkBWTL</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Black.ttf</string>
