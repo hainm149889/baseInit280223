@@ -57,6 +57,7 @@ export default StyleSheet.create({
     ...Themes.font.light,
     fontSize: 16,
     color: Themes.colors.textPrimary,
+    marginLeft: ScreenUtils.scale(5),
   },
   textContent: {
     flex: 1,

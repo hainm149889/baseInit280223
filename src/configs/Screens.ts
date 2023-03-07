@@ -7,4 +7,6 @@ export enum SCREENS {
   HomeStack = 'HomeStack',
   AccountScreen = 'AccountScreen',
   LOGIN_SCREEN = 'LoginScreen',
+  AuthNavigation = 'AuthNavigation',
+  SEARCH_SCREEN = 'SearchScreen',
 }

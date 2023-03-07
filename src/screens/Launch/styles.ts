@@ -45,7 +45,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   backgroundImg: {
-    marginTop: ScreenUtils.scale(-12),
+    flex: 1,
     width: '100%',
     height: '100%',
   },

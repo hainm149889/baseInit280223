@@ -22,7 +22,9 @@ export const LaunchScreen: FunctionComponent<Props> = () => {
   useFocusEffect(
     useCallback(() => {
       const timer = setTimeout(() => {
-        navigation.navigate(SCREENS.LOGIN_SCREEN);
+        navigation.navigate(SCREENS.AuthNavigation, {
+          screen: SCREENS.LOGIN_SCREEN,
+        });
       }, 2000);
       return () => {
         clearTimeout(timer);
@@ -35,7 +37,7 @@ export const LaunchScreen: FunctionComponent<Props> = () => {
       <FastImage
         source={Images.splash}
         style={styles.backgroundImg}
-        resizeMode={FastImage.resizeMode.contain}
+        resizeMode={FastImage.resizeMode.cover}
       />
     </View>
   );

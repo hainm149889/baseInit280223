@@ -30,14 +30,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  iconTop: {
-    width: ScreenUtils.scale(32),
-    height: ScreenUtils.scale(32),
-    borderRadius: ScreenUtils.scale(20),
-    backgroundColor: Themes.colors.primary,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
   titleTop: {
     fontSize: 12,
     ...Themes.font.medium,

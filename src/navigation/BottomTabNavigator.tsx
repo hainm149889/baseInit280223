@@ -1,28 +1,27 @@
 /* eslint-disable react-native/no-inline-styles */
 import {SCREENS} from '@configs';
-import {NavigationUtils, ScreenUtils} from '@helpers';
+import {ScreenUtils} from '@helpers';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {AccountScreen, HomeScreen} from '@screens';
+import {AccountScreen, HomeNavParams, HomeScreen, SearchScreen} from '@screens';
 
 import {translate} from '@shared';
-import {Themes} from '@themes';
+import {Metrics, Themes} from '@themes';
 import React from 'react';
 import {Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import styles from './styles';
 
 export type HomeParamsList = {
-  [SCREENS.HOME]: undefined;
+  [SCREENS.HOME]: HomeNavParams;
 };
 
 const Tab = createBottomTabNavigator();
-const HomeStackNavigator = NavigationUtils.createNavigation<HomeParamsList>();
 
 const getTabBarIconImage = (
+  icon: string,
   title?: string,
   focused?: boolean,
-  isNotification?: boolean,
-  isCheckScroll?: boolean,
 ) => {
   return (
     <View
@@ -39,58 +38,32 @@ const getTabBarIconImage = (
               alignItems: 'center',
             }
       }>
-      {title === translate('label.tab.home') && focused ? (
-        !isCheckScroll ? (
-          <View style={styles.iconHome}>
-            <Text>home</Text>
-          </View>
-        ) : (
-          <View style={styles.iconTop}>
-            <Text>home</Text>
-            <Text style={styles.titleTop}>TOP</Text>
-          </View>
-        )
-      ) : (
-        <>
-          <Text>home</Text>
-          <Text
-            style={[
-              styles.titleBottomTab,
-              {
-                color: focused
-                  ? Themes.colors.primary
-                  : Themes.colors.coolGray60,
-              },
-            ]}>
-            {title}
-          </Text>
-        </>
-      )}
-      {!!isNotification && <View style={styles.badgeWrapper} />}
+      <>
+        <IconAntDesign
+          name={icon}
+          size={focused ? Metrics.icons.mediumLarge : Metrics.icons.small}
+          color={focused ? Themes.colors.blue29 : Themes.colors.coolGray60}
+        />
+        <Text
+          style={[
+            styles.titleBottomTab,
+            {
+              color: focused ? Themes.colors.blue29 : Themes.colors.coolGray60,
+            },
+          ]}>
+          {title}
+        </Text>
+      </>
     </View>
   );
 };
-
-function HomeStack() {
-  return (
-    <HomeStackNavigator.Navigator initialRouteName={SCREENS.HOME}>
-      <HomeStackNavigator.Screen
-        name={SCREENS.HOME}
-        component={HomeScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-    </HomeStackNavigator.Navigator>
-  );
-}
 
 export function BottomTabNavigator() {
   const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
-      initialRouteName={SCREENS.HomeStack}
+      initialRouteName={SCREENS.HOME}
       screenOptions={{
         tabBarActiveTintColor: Themes.colors.white,
         tabBarShowLabel: false,
@@ -105,11 +78,24 @@ export function BottomTabNavigator() {
         headerShown: false,
       }}>
       <Tab.Screen
-        name={SCREENS.HomeStack}
-        component={HomeStack}
+        name={SCREENS.HOME}
+        component={HomeScreen}
         options={{
           tabBarIcon: ({focused}) =>
-            getTabBarIconImage(translate('home'), focused, false),
+            getTabBarIconImage('home', translate('BottomTab.home'), focused),
+        }}
+      />
+      <Tab.Screen
+        name={SCREENS.SEARCH_SCREEN}
+        component={SearchScreen}
+        options={{
+          tabBarIcon: ({focused}) =>
+            getTabBarIconImage(
+              'search1',
+              translate('BottomTab.search'),
+              focused,
+            ),
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -117,7 +103,7 @@ export function BottomTabNavigator() {
         component={AccountScreen}
         options={{
           tabBarIcon: ({focused}) =>
-            getTabBarIconImage(translate('home'), focused),
+            getTabBarIconImage('user', translate('BottomTab.account'), focused),
         }}
       />
 

@@ -1,33 +1,15 @@
-import {RegisterUserRequest} from '@models';
+import {CONSTANT} from '@configs';
+import {RegisterUserRequest, RequestParamsLogin} from '@models';
 import Config from 'react-native-config';
 import {BaseApi} from './base-api';
 
 const {IDENTITY_HOST} = Config;
 
 class AccountApi extends BaseApi {
-  getUserInfoByToken(token: string, provider: string) {
-    let url = `${IDENTITY_HOST}/api/Account/GetUserInfoByToken/info/token`;
-    return this.post(
-      url,
-      {
-        token,
-        provider,
-      },
-      {},
-      true,
-    );
+  onLogin(requestParams: RequestParamsLogin) {
+    let url = `${CONSTANT.BASE_URL}${CONSTANT.PATH.login}`;
+    return this.post(url, requestParams, {}, true);
   }
-
-  externalRegister(data: any) {
-    let url = `${IDENTITY_HOST}/api/Account/ExternalRegister`;
-    return this.post(url, data, {}, true);
-  }
-
-  getLinkUserRegister(email: string) {
-    let url = `${IDENTITY_HOST}/api/Account/GetLinkUserRegister`;
-    return this.post(url, {}, {email}, true);
-  }
-
   changePassword(
     email: string,
     password: string,

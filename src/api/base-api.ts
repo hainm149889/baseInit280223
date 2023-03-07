@@ -1,13 +1,10 @@
+import {CONSTANT} from '@configs';
 import {currentLanguage, translate} from '@shared';
-import Config from 'react-native-config';
 import AxiosService from './axios.service';
-
-const {API_HOST, IDENTITY_HOST} = Config;
 
 export class BaseApi {
   baseUrl?: string;
-  apiHostUrl = `${API_HOST}`;
-  identityApiHostUrl = `${IDENTITY_HOST}`;
+  apiHostUrl = `${CONSTANT.BASE_URL}`;
 
   constructor(baseUrl?: string) {
     this.baseUrl = baseUrl;
@@ -15,6 +12,7 @@ export class BaseApi {
   createDefaultHeader() {
     return {
       'Accept-Language': currentLanguage ?? 'vi-VN',
+      // PrivateKey: CONSTANT.PRIVATE_KEY,
     };
   }
 

@@ -108,6 +108,7 @@ export const Utils = {
     formatDateTime1: (datetime: any) =>
       moment(datetime).format('DD/MM/YYYY HH:mm'),
     formatDate: (datetime: any) => moment(datetime).format('DD/MM/YYYY'),
+    formatMonthYear: (datetime: any) => moment(datetime).format('MM/YYYY'),
     formatYYMMDD: (datetime: any) => moment(datetime).format('YYYY-MM-DD'),
     formatYearDate: (datetime: any) => moment(datetime).format('yyyy-MM-dd'),
     formatDay: (datetime: any) => moment(datetime).format('DD'),

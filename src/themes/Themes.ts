@@ -23,9 +23,13 @@ export const Themes = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
+    blue29: '#2998FF',
+    blue006: '#006BD0',
     blueb7f: '#033B7F',
     blue008: '#0080E4',
     green22: '#229F26',
+
+    gray3c: '#3C3C43',
 
     text: '#000000',
     gradient: '#00AEE4',

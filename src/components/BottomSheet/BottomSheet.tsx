@@ -3,15 +3,9 @@ import {ScreenUtils} from '@helpers';
 import {translate} from '@shared';
 import {Themes} from '@themes';
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {
-  Dimensions,
-  KeyboardAvoidingView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  Modal,
-} from 'react-native';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {Modalize} from 'react-native-modalize';
+import Flag from 'react-native-flags';
 import styles from './styles';
 export interface BottomSheetOption {
   color?: string;
@@ -26,13 +20,12 @@ export interface BottomSheetOption {
   onPress: (value?: string) => void;
   isChecked?: boolean;
   image?: any;
+  countryCode?: string;
 }
 
 interface IProps {
   header?: string;
-  isShowModal: boolean;
   arrOption: BottomSheetOption[];
-  onCloseModal: Function;
   onModalHide?: () => void;
   isSearch?: boolean;
   titleSearch?: string;
@@ -40,106 +33,50 @@ interface IProps {
   titleModal?: string;
   showTitle?: boolean;
   chooseValue?: string;
+  modalRef: any;
 }
 
 export const BottomSheet: FunctionComponent<IProps> = props => {
-  const {
-    onCloseModal,
-    titleModal,
-    arrOption,
-    isShowModal,
-    isTranslated = true,
-    showTitle = true,
-    chooseValue,
-  } = props;
-  console.log('🚀 ~ file: BottomSheet.tsx:55 ~ chooseValue:', chooseValue);
-  const [isShowModalState, setIsShowModalState] = useState(isShowModal);
-  const [dataSource, setDataSource] = useState(arrOption);
-  const hideModal = function () {
-    setIsShowModalState(false);
-    if (onCloseModal) {
-      onCloseModal();
-    }
-  };
+  const {arrOption, isTranslated = true, chooseValue, modalRef} = props;
 
-  useEffect(() => {
-    setIsShowModalState(isShowModal);
-  }, [isShowModal]);
+  const [dataSource, setDataSource] = useState(arrOption);
 
   useEffect(() => {
     setDataSource(arrOption);
   }, [arrOption]);
 
   return (
-    <Modal
-      hardwareAccelerated={false}
-      style={styles.modalContainer}
-      visible={isShowModalState}>
-      <KeyboardAvoidingView
-        behavior={'position'}
-        style={{
-          maxHeight: Dimensions.get('window').height * 0.9,
-        }}>
-        <View style={styles.headerContainer} />
-        <View
-          style={[
-            styles.contentContainer,
-            {paddingBottom: ScreenUtils.scale(100)},
-          ]}>
-          {showTitle && titleModal ? (
-            <View style={styles.titleModalContainer}>
-              <Text style={styles.titleModalText}>
-                {isTranslated ? titleModal : translate(titleModal)}
+    <Modalize ref={modalRef} modalHeight={ScreenUtils.HEIGHT_SCREEN / 4}>
+      <ScrollView
+        style={{marginBottom: ScreenUtils.scale(20)}}
+        showsVerticalScrollIndicator={false}>
+        {dataSource.map((item: BottomSheetOption, index: number) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => item.onPress()}
+            style={styles.itemContainer}>
+            <View style={styles.titleContainer}>
+              <Flag code={item.countryCode} size={24} />
+              <Text
+                numberOfLines={1}
+                style={[
+                  styles.text,
+                  {
+                    color:
+                      item.title === chooseValue
+                        ? Themes.colors.blue29
+                        : item.titleColor
+                        ? item.titleColor
+                        : Themes.colors.textPrimary,
+                  },
+                  ,
+                ]}>
+                {isTranslated ? item.title : translate(item.title)}
               </Text>
-              <TouchableOpacity onPress={() => hideModal()}>
-                <Text>close</Text>
-              </TouchableOpacity>
             </View>
-          ) : null}
-          <ScrollView
-            style={{marginBottom: ScreenUtils.scale(20)}}
-            showsVerticalScrollIndicator={false}>
-            {dataSource.map((item: BottomSheetOption, index: number) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => item.onPress()}
-                style={styles.itemContainer}>
-                <View style={styles.titleContainer}>
-                  <Text
-                    numberOfLines={1}
-                    style={[
-                      styles.text,
-                      {
-                        color:
-                          item.title === chooseValue
-                            ? Themes.colors.primary
-                            : item.titleColor
-                            ? item.titleColor
-                            : Themes.colors.textPrimary,
-                      },
-                      ,
-                    ]}>
-                    {isTranslated ? item.title : translate(item.title)}
-                  </Text>
-                </View>
-
-                {item.content ? (
-                  <View style={styles.contentDetailContainer}>
-                    <Text
-                      numberOfLines={2}
-                      style={[
-                        styles.textContent,
-                        item.contentColor ? {color: item.contentColor} : {},
-                      ]}>
-                      {isTranslated ? item.content : translate(item.content)}
-                    </Text>
-                  </View>
-                ) : null}
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-      </KeyboardAvoidingView>
-    </Modal>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </Modalize>
   );
 };

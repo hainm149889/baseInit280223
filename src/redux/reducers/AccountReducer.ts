@@ -11,7 +11,7 @@ export interface IUserState {
 }
 
 export const defaultState: IUserState = {
-  language: '',
+  language: 'vi-VN',
 };
 
 export const accountReducer: Reducer<IUserState, UnfoldSagaActionType> = (
