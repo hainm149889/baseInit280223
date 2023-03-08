@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -11,47 +10,56 @@ import IconMatterialCommunity from 'react-native-vector-icons/MaterialCommunityI
 
 import {commonApi} from '@api';
 import {ScreenUtils, Utils} from '@helpers';
+import {useDebounce} from '@hooks';
 import {
   ListDestination,
+  RequestParamsGetDestinationByKeyword,
   RequestParamsTopDestination,
   TopDestinationResponse,
 } from '@models';
 import {translate} from '@shared';
 import {Metrics, Themes} from '@themes';
-import {Modal} from 'react-native';
 import {Modalize} from 'react-native-modalize';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import {ChooseNumberOfUsersComponent} from '../ChooseNumberOfUsersComponent';
 import {ChooseRadioButtonOption} from '../ChooseRadioButtonOption';
 import {ModalChooseDate} from '../ModalChooseDate';
 import {ModalChooseNumberUser} from '../ModalChooseNumberUser';
+import {ModalChoosePlaceData} from '../ModalChoosePlaceData';
 import styles from './styles';
 
 export const OneWayAndRoundTripScreen = () => {
   const [isOneway, setIsOneway] = useState<boolean>(true);
+  const [isCalculateAuto, setIsCalculateAuto] = useState<boolean>(true);
+  const [isIncludePlaceStop, setIsIncludePlaceStop] = useState<boolean>(true);
   const [isFindFollowingDate, setIsFindFollowingDate] = useState<boolean>(true);
-  const [dataPlace, setDataPlace] = useState<Array<TopDestinationResponse>>([]);
 
-  const [placeStart, setPlaceStart] = useState<ListDestination>(
-    {} as ListDestination,
-  );
+  const [dataPlace, setDataPlace] = useState<Array<TopDestinationResponse>>([]);
+  const [dataPlaceByKeyword, setDataPlaceByKeyword] = useState<
+    Array<ListDestination>
+  >([]);
+  const [dataChild, setDataChild] = useState<any[]>([]);
+
+  const [placeStart, setPlaceStart] = useState<string>('');
+
+  const [placeNewArrayExcceptPlaceStart, setNewArrayExcceptPlaceStart] =
+    useState<any[]>([]);
 
   const [startDate, setStartDate] = useState<Date>(new Date());
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [placeEnd, setPlaceEnd] = useState<string>('');
   const [endDate, setEndDate] = useState<Date>(startDate);
 
   const [adultNum, setAdultNum] = useState<number>(1);
   const [childrenNum, setChildrenNum] = useState<number>(0);
   const [babyNum, setBabyNum] = useState<number>(0);
-  const [isOpenModalChoosePlace, setShowModalChoosePlace] =
+
+  const [isOpenModalChoosePlaceStart, setShowModalChoosePlaceStart] =
+    useState<boolean>(false);
+  const [isOpenModalChoosePlaceEnd, setShowModalChoosePlaceEnd] =
     useState<boolean>(false);
 
-  const insets = useSafeAreaInsets();
-
-  const [dataChild, setDataChild] = useState<any[]>();
+  const [searchValue, setSearchValue] = useState<string>('');
+  const debounceSearch = useDebounce(searchValue);
   const [catSelected, setCatSelected] = useState<string>('');
 
   useEffect(() => {
@@ -59,9 +67,32 @@ export const OneWayAndRoundTripScreen = () => {
     setDataChild(dataPlace[0]?.List);
   }, [dataPlace]);
 
-  const handleSelectChild = (itemsChoosed: ListDestination) => {
-    setPlaceStart(itemsChoosed);
-    setShowModalChoosePlace(false);
+  const handleSelectChildStart = (itemsChoosed: ListDestination) => {
+    setPlaceStart(
+      itemsChoosed?.Name_Vi +
+        ', ' +
+        itemsChoosed?.CityName_Vi +
+        ' (' +
+        itemsChoosed?.CityCode +
+        ')',
+    );
+    const filteredDataChild = dataChild.filter(
+      (item: ListDestination) => item.Identity !== itemsChoosed?.Identity,
+    );
+    setNewArrayExcceptPlaceStart(filteredDataChild);
+    setShowModalChoosePlaceStart(false);
+  };
+
+  const handleSelectChildEnd = (itemsChoosed: ListDestination) => {
+    setPlaceEnd(
+      itemsChoosed?.Name_Vi +
+        ', ' +
+        itemsChoosed?.CityName_Vi +
+        ' (' +
+        itemsChoosed?.CityCode +
+        ')',
+    );
+    setShowModalChoosePlaceEnd(false);
   };
 
   const modalizeRef = useRef<Modalize>(null);
@@ -85,6 +116,7 @@ export const OneWayAndRoundTripScreen = () => {
 
   const chooseStartDate = (date: any) => {
     setStartDate(date);
+    setEndDate(date);
     closeModalChooseDate();
   };
 
@@ -113,16 +145,52 @@ export const OneWayAndRoundTripScreen = () => {
     } catch (error) {}
   }, []);
 
+  const _getDestinationByKeyword = useCallback(() => {
+    try {
+      const requestParams: RequestParamsGetDestinationByKeyword = {
+        Keyword: debounceSearch,
+        Language: 'vi',
+        Reference: true,
+        ForceGet: true,
+      };
+      commonApi
+        .getDestinationByKeyword(requestParams)
+        ?.then(response => {
+          if (response.Success) {
+            setDataPlaceByKeyword(response?.List);
+          } else {
+            console.log('Lỗi get data destination by keyword');
+          }
+        })
+        .catch(() => {});
+    } catch (error) {}
+  }, [debounceSearch]);
+
   useEffect(() => {
     _getTopDestination();
-  }, [_getTopDestination]);
+    _getDestinationByKeyword();
+  }, [_getTopDestination, _getDestinationByKeyword]);
 
   return (
     <View style={styles.container}>
       <View style={styles.mainContent}>
         <ChooseRadioButtonOption
-          isOneway={isOneway}
-          setIsOneway={setIsOneway}
+          isOptionOne={isOneway}
+          setIsOptionOne={setIsOneway}
+          titleOptionOne={translate('SearchScreen.oneWay')}
+          titleOptionTwo={translate('SearchScreen.roundTrip')}
+        />
+        <ChooseRadioButtonOption
+          isOptionOne={isCalculateAuto}
+          setIsOptionOne={setIsCalculateAuto}
+          titleOptionOne={translate('SearchScreen.calculateAuto')}
+          titleOptionTwo={translate('SearchScreen.calculateNormal')}
+        />
+        <ChooseRadioButtonOption
+          isOptionOne={isIncludePlaceStop}
+          setIsOptionOne={setIsIncludePlaceStop}
+          titleOptionOne={translate('SearchScreen.includePlaceStop')}
+          titleOptionTwo={translate('SearchScreen.justGoAhead')}
         />
         <View style={styles.findCalendarContainer}>
           <TouchableOpacity
@@ -193,23 +261,16 @@ export const OneWayAndRoundTripScreen = () => {
         <View style={styles.searchInputContainer}>
           <TouchableOpacity
             onPress={() => {
-              setShowModalChoosePlace(true);
+              setShowModalChoosePlaceStart(true);
             }}>
             <TextInput
-              value={
-                placeStart?.Name_Vi +
-                ', ' +
-                placeStart?.CityName_Vi +
-                ' (' +
-                placeStart?.CityCode +
-                ')'
-              }
-              editable={false}
+              value={placeStart}
               style={styles.searchInput}
+              editable={false}
               placeholder={translate('SearchScreen.choosePlaceStart')}
               placeholderTextColor={Themes.colors.collGray40}
               onFocus={() => {
-                setShowModalChoosePlace(true);
+                setShowModalChoosePlaceStart(true);
               }}
             />
             <IconMatterialCommunity
@@ -219,12 +280,20 @@ export const OneWayAndRoundTripScreen = () => {
               style={styles.iconMapMarker}
             />
           </TouchableOpacity>
-          <View style={{marginTop: ScreenUtils.scale(16)}}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowModalChoosePlaceEnd(true);
+            }}
+            style={{marginTop: ScreenUtils.scale(16)}}>
             <TextInput
               value={placeEnd}
               style={styles.searchInput}
               placeholder={translate('SearchScreen.choosePlaceEnd')}
               placeholderTextColor={Themes.colors.collGray40}
+              editable={false}
+              onFocus={() => {
+                setShowModalChoosePlaceEnd(true);
+              }}
             />
             <IconMatterialCommunity
               name="map-marker"
@@ -232,7 +301,7 @@ export const OneWayAndRoundTripScreen = () => {
               size={Metrics.icons.smallSmall}
               style={styles.iconMapMarker}
             />
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.chooseTimeContainer}>
           {isFindFollowingDate ? (
@@ -243,14 +312,11 @@ export const OneWayAndRoundTripScreen = () => {
                   color={Themes.colors.black}
                   size={Metrics.icons.smallSmall}
                 />
-                <TextInput
-                  style={styles.txtChooseTime}
-                  editable={false}
-                  value={Utils.date.formatDate(startDate)}
-                  placeholder={translate('SearchScreen.startDate')}
-                  placeholderTextColor={Themes.colors.collGray40}
-                  onFocus={openModalChooseDate}
-                />
+                <Text
+                  onPress={openModalChooseDate}
+                  style={styles.txtChooseTime}>
+                  {Utils.date.formatDate(startDate)}
+                </Text>
               </View>
               {!isOneway && (
                 <TouchableOpacity
@@ -263,13 +329,13 @@ export const OneWayAndRoundTripScreen = () => {
                     color={Themes.colors.black}
                     size={Metrics.icons.smallSmall}
                   />
-                  <TextInput
+                  <Text
                     style={styles.txtChooseTime}
-                    value={Utils.date.formatDate(endDate)}
-                    editable={false}
-                    placeholder={translate('SearchScreen.endDate')}
-                    placeholderTextColor={Themes.colors.collGray40}
-                  />
+                    onPress={() => {
+                      modalizeChooseEndDateRef.current?.open();
+                    }}>
+                    {Utils.date.formatDate(endDate)}
+                  </Text>
                 </TouchableOpacity>
               )}
             </>
@@ -283,13 +349,11 @@ export const OneWayAndRoundTripScreen = () => {
                   color={Themes.colors.black}
                   size={Metrics.icons.smallSmall}
                 />
-                <TextInput
+                <Text
                   style={styles.txtChooseTime}
-                  editable={false}
-                  value={Utils.date.formatMonthYear(startDate)}
-                  placeholder={translate('SearchScreen.startDate')}
-                  placeholderTextColor={Themes.colors.collGray40}
-                />
+                  onPress={openModalChooseDate}>
+                  {Utils.date.formatMonthYear(startDate)}
+                </Text>
               </TouchableOpacity>
               {!isOneway && (
                 <TouchableOpacity
@@ -302,13 +366,11 @@ export const OneWayAndRoundTripScreen = () => {
                     color={Themes.colors.black}
                     size={Metrics.icons.smallSmall}
                   />
-                  <TextInput
+                  <Text
                     style={styles.txtChooseTime}
-                    editable={false}
-                    value={Utils.date.formatMonthYear(endDate)}
-                    placeholder={translate('SearchScreen.endDate')}
-                    placeholderTextColor={Themes.colors.collGray40}
-                  />
+                    onPress={openModalChooseDate}>
+                    {Utils.date.formatMonthYear(endDate)}
+                  </Text>
                 </TouchableOpacity>
               )}
             </>
@@ -351,81 +413,36 @@ export const OneWayAndRoundTripScreen = () => {
         minStartDate={startDate}
         onChooseDate={chooseEndDate}
       />
-      <Modal
-        visible={isOpenModalChoosePlace}
-        transparent={true}
-        onRequestClose={() => {
-          setShowModalChoosePlace(false);
-        }}>
-        <View style={styles.modal}>
-          <View
-            style={[
-              styles.sourceContainer,
-              {
-                top: insets.top + ScreenUtils.scale(195),
-                left: insets.left + ScreenUtils.scale(16),
-              },
-            ]}>
-            <ScrollView
-              contentContainerStyle={styles.content}
-              horizontal
-              scrollEnabled={false}>
-              <View style={styles.contentLeft}>
-                {dataPlace?.map((cat, index) => {
-                  const handleSelectCat = () => {
-                    const dataChileCat = dataPlace.find(
-                      item => item.RegionCode === cat.RegionCode,
-                    );
-                    setCatSelected(cat.RegionCode);
-                    setDataChild(dataChileCat?.List);
-                  };
-                  return (
-                    <TouchableOpacity
-                      style={[
-                        styles.parentCate,
-                        {
-                          borderRightColor:
-                            catSelected === cat.RegionCode
-                              ? Themes.colors.blue29
-                              : Themes.colors.collGray40,
-                        },
-                      ]}
-                      key={`${cat.RegionCode}_${index}`}
-                      onPress={handleSelectCat}>
-                      <Text
-                        style={{
-                          color:
-                            catSelected === cat.RegionCode
-                              ? Themes.colors.blue29
-                              : Themes.colors.collGray40,
-                        }}>
-                        {cat?.RegionName}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-              <ScrollView
-                style={{marginLeft: ScreenUtils.scale(10)}}
-                showsVerticalScrollIndicator={false}>
-                {dataChild?.map((child, index) => (
-                  <TouchableOpacity
-                    style={{marginBottom: ScreenUtils.scale(10)}}
-                    key={`${child.Code}_${index}`}
-                    onPress={() => {
-                      handleSelectChild(child);
-                    }}>
-                    <Text>
-                      {child?.CityCode} - {child?.CityName_Vi}
-                    </Text>
-                    <Text style={styles.txtNameAirport}>{child?.Name_Vi}</Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
+      <ModalChoosePlaceData
+        isShowModal={isOpenModalChoosePlaceStart}
+        setCatSelected={setCatSelected}
+        setDataChild={setDataChild}
+        setSearchValue={setSearchValue}
+        searchValue={searchValue}
+        dataChild={dataChild!}
+        dataPlace={dataPlace}
+        catSelected={catSelected}
+        dataPlaceByKeyword={dataPlaceByKeyword}
+        onCloseModal={() => {
+          setShowModalChoosePlaceStart(false);
+        }}
+        handleSelectChild={handleSelectChildStart}
+      />
+      <ModalChoosePlaceData
+        isShowModal={isOpenModalChoosePlaceEnd}
+        setCatSelected={setCatSelected}
+        setDataChild={setDataChild}
+        setSearchValue={setSearchValue}
+        searchValue={searchValue}
+        dataChild={placeNewArrayExcceptPlaceStart!}
+        dataPlace={dataPlace}
+        catSelected={catSelected}
+        dataPlaceByKeyword={dataPlaceByKeyword}
+        onCloseModal={() => {
+          setShowModalChoosePlaceEnd(false);
+        }}
+        handleSelectChild={handleSelectChildEnd}
+      />
     </View>
   );
 };

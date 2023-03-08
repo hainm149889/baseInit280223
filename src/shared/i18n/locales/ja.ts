@@ -40,5 +40,9 @@ export default {
     from2To12: 'From 2 to 12 years old',
     under2: 'Under 2 years old',
     confirm: 'Confirm',
+    calculateAuto: 'Tính giá tự động',
+    calculateNormal: 'Tính giá thủ công',
+    includePlaceStop: 'Include Place Stop',
+    justGoAhead: 'Just Go Ahead',
   },
 };

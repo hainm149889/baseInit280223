@@ -37,3 +37,10 @@ export interface ListDestination {
   UpdatedName: any;
   UserAvatar: any;
 }
+
+export interface RequestParamsGetDestinationByKeyword {
+  Keyword: string;
+  Language: string;
+  Reference: boolean;
+  ForceGet: boolean;
+}

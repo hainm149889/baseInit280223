@@ -12,7 +12,7 @@ export default StyleSheet.create({
   },
   check: {
     borderWidth: 2,
-    borderColor: Themes.colors.brand60,
+    borderColor: Themes.colors.blue29,
   },
   uncheck: {
     borderWidth: 2,
@@ -22,6 +22,6 @@ export default StyleSheet.create({
     width: ScreenUtils.scale(8),
     height: ScreenUtils.scale(8),
     borderRadius: ScreenUtils.scale(4),
-    backgroundColor: Themes.colors.brand60,
+    backgroundColor: Themes.colors.blue29,
   },
 });

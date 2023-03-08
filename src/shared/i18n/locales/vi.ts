@@ -40,5 +40,9 @@ export default {
     from2To12: 'Từ 2 - 12 tuổi',
     under2: 'Dưới 2 tuổi',
     confirm: 'Xác nhận',
+    calculateAuto: 'Tính giá tự động',
+    calculateNormal: 'Tính giá thủ công',
+    includePlaceStop: 'Gồm điểm dừng',
+    justGoAhead: 'Chỉ bay thẳng',
   },
 };

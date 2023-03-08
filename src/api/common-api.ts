@@ -1,5 +1,7 @@
-import {CONSTANT} from '@configs';
-import {RequestParamsTopDestination} from '@models';
+import {
+  RequestParamsGetDestinationByKeyword,
+  RequestParamsTopDestination,
+} from '@models';
 import {BaseApi} from './base-api';
 
 class CommonApi extends BaseApi {
@@ -13,6 +15,9 @@ class CommonApi extends BaseApi {
   getDestination(requestParams: RequestParamsTopDestination) {
     // let url = `${CONSTANT.BASE_URL}${CONSTANT.PATH.getTopDestination}`;
     return this.post('GetTopDestination', requestParams, {});
+  }
+  getDestinationByKeyword(requestParams: RequestParamsGetDestinationByKeyword) {
+    return this.post('GetByKeyWord', requestParams, {});
   }
 }
 

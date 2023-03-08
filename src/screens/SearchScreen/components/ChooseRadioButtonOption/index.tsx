@@ -1,20 +1,19 @@
 import {RadioButton} from '@components';
 import {ScreenUtils} from '@helpers';
-import {translate} from '@shared';
 import React, {FunctionComponent} from 'react';
 import {Text, View} from 'react-native';
 import styles from './styles';
 
 interface OwnProps {
-  isOneway?: boolean;
-  setIsOneway?: (val: any) => void;
-  numberOfBaby?: number;
-  openModalChooseNumberOfUsers?: () => void;
+  isOptionOne?: boolean;
+  setIsOptionOne?: (val: any) => void;
+  titleOptionOne?: string;
+  titleOptionTwo?: string;
 }
 
 type Props = OwnProps;
 export const ChooseRadioButtonOption: FunctionComponent<Props> = props => {
-  const {isOneway, setIsOneway} = props;
+  const {isOptionOne, setIsOptionOne, titleOptionOne, titleOptionTwo} = props;
   return (
     <View
       style={[
@@ -23,10 +22,10 @@ export const ChooseRadioButtonOption: FunctionComponent<Props> = props => {
       ]}>
       <View style={styles.radioButtonContainer}>
         <RadioButton
-          checked={isOneway}
-          onChange={() => setIsOneway?.(!isOneway)}
+          checked={isOptionOne}
+          onChange={() => setIsOptionOne?.(!isOptionOne)}
         />
-        <Text style={styles.optionTxt}>{translate('SearchScreen.oneWay')}</Text>
+        <Text style={styles.optionTxt}>{titleOptionOne}</Text>
       </View>
       <View
         style={[
@@ -34,12 +33,10 @@ export const ChooseRadioButtonOption: FunctionComponent<Props> = props => {
           {marginLeft: ScreenUtils.scale(10)},
         ]}>
         <RadioButton
-          checked={!isOneway}
-          onChange={() => setIsOneway?.(!isOneway)}
+          checked={!isOptionOne}
+          onChange={() => setIsOptionOne?.(!isOptionOne)}
         />
-        <Text style={styles.optionTxt}>
-          {translate('SearchScreen.roundTrip')}
-        </Text>
+        <Text style={styles.optionTxt}>{titleOptionTwo}</Text>
       </View>
     </View>
   );

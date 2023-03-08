@@ -40,5 +40,9 @@ export default {
     from2To12: 'From 2 to 12 years old',
     under2: 'Under 2 years old',
     confirm: 'Confirm',
+    calculateAuto: 'Calculate Price Auto',
+    calculateNormal: 'Calculate Price Manual',
+    includePlaceStop: 'Include Place Stop',
+    justGoAhead: 'Just Go Ahead',
   },
 };

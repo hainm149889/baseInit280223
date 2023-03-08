@@ -63,7 +63,7 @@ export function BottomTabNavigator() {
 
   return (
     <Tab.Navigator
-      initialRouteName={SCREENS.HOME}
+      initialRouteName={SCREENS.SEARCH_SCREEN}
       screenOptions={{
         tabBarActiveTintColor: Themes.colors.white,
         tabBarShowLabel: false,

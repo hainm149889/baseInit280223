@@ -114,7 +114,7 @@ export default StyleSheet.create({
   },
   sourceContainer: {
     width: ScreenUtils.WIDTH_SCREEN - ScreenUtils.scale(32),
-    height: ScreenUtils.HEIGHT_SCREEN / 2,
+    height: ScreenUtils.HEIGHT_SCREEN / 1.7,
     backgroundColor: Themes.colors.white,
     position: 'absolute',
     borderRadius: ScreenUtils.scale(4),
@@ -123,20 +123,11 @@ export default StyleSheet.create({
   content: {
     flex: 1,
     padding: ScreenUtils.scale(8),
+    borderTopWidth: StyleSheet.hairlineWidth,
+    marginTop: ScreenUtils.scale(10),
+    borderTopColor: Themes.colors.collGray40,
   },
   contentLeft: {
     width: ScreenUtils.scale(80),
-  },
-  parentCate: {
-    borderRightWidth: StyleSheet.hairlineWidth * 2,
-    marginBottom: ScreenUtils.scale(10),
-    paddingVertical: ScreenUtils.scale(10),
-  },
-  txtNameAirport: {
-    fontSize: 12,
-    lineHeight: 14,
-    fontWeight: '400',
-    ...Themes.font.medium,
-    color: Themes.colors.coolGray60,
   },
 });
