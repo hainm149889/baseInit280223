@@ -55,7 +55,9 @@ export const ModalChoosePlaceData: FunctionComponent<Props> = props => {
     index: number;
   }) => {
     return (
-      <View style={styles.itemSearchByKeyContainer}>
+      <TouchableOpacity
+        style={styles.itemSearchByKeyContainer}
+        onPress={() => handleSelectChild(item)}>
         <IconMaterial
           name="airplanemode-on"
           size={Metrics.icons.small}
@@ -73,7 +75,7 @@ export const ModalChoosePlaceData: FunctionComponent<Props> = props => {
             {item?.CityName_Vi}, {item?.CountryName_Vi}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 

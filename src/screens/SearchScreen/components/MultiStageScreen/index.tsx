@@ -64,7 +64,21 @@ export const MultiStageScreen = () => {
   return (
     <View style={styles.container}>
       <View style={{paddingHorizontal: ScreenUtils.scale(16)}}>
-        <FlatList data={dataPlace} renderItem={renderItem} />
+        <FlatList
+          data={dataPlace}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+          ListFooterComponent={
+            <TouchableOpacity style={styles.btnAddMoreStop}>
+              <Text style={styles.txtAddMoreStop}>Thêm điểm dừng</Text>
+              <IconAntDesign
+                name="pluscircleo"
+                size={Metrics.icons.small}
+                color={Themes.colors.white}
+              />
+            </TouchableOpacity>
+          }
+        />
         {/* <ChoosePlaceDataComponent
           titlePlaceEnd="Chọn điểm đi"
           titleDate="Ngày đi"
@@ -77,14 +91,7 @@ export const MultiStageScreen = () => {
           titlePlaceStart="Chọn điểm đến"
           dataPlace={''}
         /> */}
-        <TouchableOpacity style={styles.btnAddMoreStop}>
-          <Text style={styles.txtAddMoreStop}>Thêm điểm dừng</Text>
-          <IconAntDesign
-            name="pluscircleo"
-            size={Metrics.icons.small}
-            color={Themes.colors.white}
-          />
-        </TouchableOpacity>
+
         <ChooseNumberOfUsersComponent
           numberOfAdults={adultNum}
           numberOfChildren={childrenNum}

@@ -435,7 +435,7 @@ export const OneWayAndRoundTripScreen = () => {
         setDataChild={setDataChild}
         setSearchValue={setSearchValue}
         searchValue={searchValue}
-        dataChild={placeNewArrayExcceptPlaceStart!}
+        dataChild={dataChild!}
         dataPlace={dataPlace}
         catSelected={catSelected}
         dataPlaceByKeyword={dataPlaceByKeyword}
