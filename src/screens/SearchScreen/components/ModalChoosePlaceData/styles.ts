@@ -9,7 +9,7 @@ export default StyleSheet.create({
   },
   sourceContainer: {
     width: ScreenUtils.WIDTH_SCREEN - ScreenUtils.scale(32),
-    height: ScreenUtils.HEIGHT_SCREEN / 2,
+    height: ScreenUtils.HEIGHT_SCREEN / 1.7,
     backgroundColor: Themes.colors.white,
     position: 'absolute',
     borderRadius: ScreenUtils.scale(4),

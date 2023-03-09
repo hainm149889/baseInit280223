@@ -17,6 +17,7 @@ interface OwnProps {
   onChangeBaby: (value: any) => void;
   setChangeBaby: (value?: number) => void;
   onConfirm?: () => void;
+  heightModal: number;
 }
 
 type Props = OwnProps;
@@ -33,9 +34,10 @@ export const ModalChooseNumberUser: FunctionComponent<Props> = props => {
     onChangeBaby,
     setChangeBaby,
     onConfirm,
+    heightModal,
   } = props;
   return (
-    <Modalize ref={modalizeRef} modalHeight={ScreenUtils.HEIGHT_SCREEN / 2.8}>
+    <Modalize ref={modalizeRef} modalHeight={heightModal}>
       <View style={styles.mainContentModal}>
         <View style={styles.optionUserContainer}>
           <View style={styles.leftContent}>

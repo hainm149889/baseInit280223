@@ -5,7 +5,7 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   mainContentModal: {
     paddingHorizontal: ScreenUtils.scale(24),
-    paddingVertical: ScreenUtils.scale(36),
+    paddingTop: ScreenUtils.scale(36),
   },
   optionUserContainer: {
     flex: 1,

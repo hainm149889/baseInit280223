@@ -393,6 +393,7 @@ export const OneWayAndRoundTripScreen = () => {
       </View>
       <ModalChooseNumberUser
         modalizeRef={modalizeRef}
+        heightModal={ScreenUtils.HEIGHT_SCREEN / 2.8}
         numberOfAdults={adultNum}
         numberOfChildren={childrenNum}
         numberOfBaby={babyNum}
