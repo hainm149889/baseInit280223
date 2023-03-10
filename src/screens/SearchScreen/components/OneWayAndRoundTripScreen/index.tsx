@@ -42,9 +42,6 @@ export const OneWayAndRoundTripScreen = () => {
 
   const [placeStart, setPlaceStart] = useState<string>('');
 
-  const [placeNewArrayExcceptPlaceStart, setNewArrayExcceptPlaceStart] =
-    useState<any[]>([]);
-
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [placeEnd, setPlaceEnd] = useState<string>('');
   const [endDate, setEndDate] = useState<Date>(startDate);
@@ -79,7 +76,7 @@ export const OneWayAndRoundTripScreen = () => {
     const filteredDataChild = dataChild.filter(
       (item: ListDestination) => item.Identity !== itemsChoosed?.Identity,
     );
-    setNewArrayExcceptPlaceStart(filteredDataChild);
+    setDataChild(filteredDataChild);
     setShowModalChoosePlaceStart(false);
   };
 

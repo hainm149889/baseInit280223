@@ -109,4 +109,16 @@ export default StyleSheet.create({
     color: Themes.colors.white,
     marginLeft: ScreenUtils.scale(4),
   },
+  btnClose: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: ScreenUtils.scale(20),
+    height: ScreenUtils.scale(20),
+    backgroundColor: 'pink',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderTopRightRadius: ScreenUtils.scale(4),
+    borderBottomLeftRadius: ScreenUtils.scale(4),
+  },
 });

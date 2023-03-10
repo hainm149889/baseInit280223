@@ -4,6 +4,7 @@ import {BottomSheet} from '@components';
 import {CONSTANT, DataConstant, SCREENS} from '@configs';
 import {ScreenUtils} from '@helpers';
 import {RequestParamsLogin} from '@models';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {AccountAction} from '@redux';
@@ -146,6 +147,12 @@ export const LoginScreen = () => {
           screen: SCREENS.HOME,
           params: {userData: response?.User},
         });
+        console.log(
+          '🚀 ~ file: index.tsx:149 ~ const_login= ~ response?.User:',
+          response?.User,
+        );
+
+        await AsyncStorage.setItem('access_token', response?.User?.TokenApi);
       } else {
         console.log('Lỗi đăng nhập');
       }

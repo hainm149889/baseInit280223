@@ -11,13 +11,14 @@ interface OwnProps {
   dataPlace?: any;
   titlePlaceEnd: string;
   titleDate?: string;
+  isClosed?: boolean;
 }
 
 type Props = OwnProps;
 
 const ChoosePlaceDataComponent: FunctionComponent<Props> = props => {
-  const {titlePlaceStart, dataPlace, titlePlaceEnd, titleDate} = props;
-  console.log('🚀 ~ file: index.tsx:20 ~ dataPlace:', dataPlace);
+  const {titlePlaceStart, dataPlace, titlePlaceEnd, titleDate, isClosed} =
+    props;
   return (
     <View style={styles.mainContent}>
       <View style={styles.subContent}>
@@ -78,6 +79,11 @@ const ChoosePlaceDataComponent: FunctionComponent<Props> = props => {
           <Text style={styles.mainPlaceStart}>23, Tháng 2 2012</Text>
         </TouchableOpacity>
       </View>
+      {isClosed && (
+        <TouchableOpacity style={styles.btnClose}>
+          <Text>-</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
